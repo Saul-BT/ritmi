@@ -4,7 +4,7 @@ import {
   allocateTimeInDay, 
   generateWeeklySchedule 
 } from '../scheduler';
-import { ScheduleSlot, WeeklySchedule, DaySchedule } from '../types';
+import { ScheduleSlot } from '../types';
 
 describe('Scheduler utility functions', () => {
   // Mock data for testing

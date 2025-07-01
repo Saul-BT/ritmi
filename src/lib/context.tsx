@@ -1,6 +1,6 @@
 'use client';
 
-import { FixedSlot, ScheduleConfig, VariableSlot, WeeklySchedule } from '@/types';
+import { FixedSlot, ScheduleConfig, VariableSlot, WeeklySchedule, ScheduleSlot, WeekDay } from '@/types';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { generateSchedule } from './scheduler';
 import { getConfig, getSchedule, saveConfig, saveSchedule } from './storage';
@@ -35,15 +35,7 @@ interface ScheduleContextType {
   generateSchedule: () => void;
 }
 
-const defaultWeeklySchedule: WeeklySchedule = {
-  monday: [],
-  tuesday: [],
-  wednesday: [],
-  thursday: [],
-  friday: [],
-  saturday: [],
-  sunday: []
-};
+// Estructura estándar de un horario semanal vacío está definida en el tipo WeeklySchedule
 
 const ScheduleContext = createContext<ScheduleContextType | undefined>(undefined);
 

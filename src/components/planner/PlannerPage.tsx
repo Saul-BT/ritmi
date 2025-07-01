@@ -105,33 +105,36 @@ export default function PlannerPage() {
         
         // Reemplazar cualquier clase con colores que usen oklab por colores hexadecimales standard
         const allColorElements = clone.querySelectorAll('[class*="bg-primary"], [class*="text-primary"], [class*="ring-primary"]');
-        allColorElements.forEach((el: HTMLElement) => {
+        allColorElements.forEach((el: Element) => {
+            const htmlEl = el as HTMLElement;
             // Eliminar clases que podrían causar problemas
             if (el.classList.contains('bg-primary')) {
                 el.classList.remove('bg-primary');
-                el.style.backgroundColor = '#3b82f6'; // Blue 500
+                htmlEl.style.backgroundColor = '#3b82f6'; // Blue 500
             }
             if (el.classList.contains('text-primary')) {
                 el.classList.remove('text-primary');
-                el.style.color = '#1d4ed8'; // Blue 700
+                htmlEl.style.color = '#1d4ed8'; // Blue 700
             }
             if (el.classList.contains('ring-primary')) {
                 el.classList.remove('ring-primary');
-                el.style.outline = '2px solid #3b82f6';
+                htmlEl.style.outline = '2px solid #3b82f6';
             }
         });
         
         // Forzar los estilos de texto para asegurar que no se corten
         const slots = clone.querySelectorAll('div[style*="position: absolute"]');
-        slots.forEach((slot: HTMLElement) => {
-          if (slot.style.position === 'absolute') {
+        slots.forEach((slot: Element) => {
+          const slotEl = slot as HTMLElement;
+          if (slotEl.style.position === 'absolute') {
             // Asegurar que el texto no se corte
-            slot.style.overflow = 'visible';
-            const textElements = slot.querySelectorAll('div');
-            textElements.forEach((textEl: HTMLElement) => {
-              textEl.style.whiteSpace = 'nowrap';
-              textEl.style.overflow = 'visible';
-              textEl.style.textOverflow = 'initial';
+            slotEl.style.overflow = 'visible';
+            const textElements = slotEl.querySelectorAll('div');
+            textElements.forEach((textEl: Element) => {
+              const textHtmlEl = textEl as HTMLElement;
+              textHtmlEl.style.whiteSpace = 'nowrap';
+              textHtmlEl.style.overflow = 'visible';
+              textHtmlEl.style.textOverflow = 'initial';
             });
           }
         });
@@ -150,48 +153,52 @@ export default function PlannerPage() {
             // Procesar elementos antes de renderizar
             // 1. Eliminar todas las animaciones y transiciones
             const elementsWithAnimations = clonedDoc.querySelectorAll('[class*="animate-"], [class*="transition-"]');
-            elementsWithAnimations.forEach((el: HTMLElement) => {
+            elementsWithAnimations.forEach((el: Element) => {
               el.classList.remove(...Array.from(el.classList).filter(c => c.startsWith('animate-') || c.startsWith('transition-')));
             });
             
             // 2. Reemplazar colores de TailwindCSS por hexadecimales directos
             const tailwindColoredElements = clonedDoc.querySelectorAll('[class*="-primary"], [class*="/"]');
-            tailwindColoredElements.forEach((el: HTMLElement) => {
+            tailwindColoredElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
               // Eliminar clases con colores
               el.classList.remove(...Array.from(el.classList).filter(c => c.includes('-primary') || c.includes('/')));
               // Usar colores hexadecimales estándar
-              el.style.backgroundColor = el.style.backgroundColor || '#ffffff';
-              el.style.color = el.style.color || '#000000';
+              htmlEl.style.backgroundColor = htmlEl.style.backgroundColor || '#ffffff';
+              htmlEl.style.color = htmlEl.style.color || '#000000';
             });
             
             // 3. Asegurar visibilidad y legibilidad de todos los textos
             const allText = clonedDoc.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6');
-            allText.forEach((el: HTMLElement) => {
-              el.style.fontFamily = 'Arial, sans-serif';
-              if (el.style.color === 'white' || el.style.color === '#ffffff') {
-                el.style.textShadow = '0 0 2px black';
+            allText.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.fontFamily = 'Arial, sans-serif';
+              if (htmlEl.style.color === 'white' || htmlEl.style.color === '#ffffff') {
+                htmlEl.style.textShadow = '0 0 2px black';
               }
             });
             
             // 4. Optimizar slots para PDF
             const slots = clonedDoc.querySelectorAll('div[style*="position: absolute"]');
-            slots.forEach((slot: HTMLElement) => {
-              slot.style.overflow = 'visible';
-              slot.style.zIndex = '1'; // Valor consistente para todos los slots
+            slots.forEach((slot: Element) => {
+              const slotEl = slot as HTMLElement;
+              slotEl.style.overflow = 'visible';
+              slotEl.style.zIndex = '1'; // Valor consistente para todos los slots
               
               // Asegurar que el fondo del slot tenga un color sólido (no oklab)
-              if (slot.style.backgroundColor && slot.style.backgroundColor.includes('oklab')) {
+              if (slotEl.style.backgroundColor && slotEl.style.backgroundColor.includes('oklab')) {
                 // Usar un color predeterminado en su lugar
-                slot.style.backgroundColor = '#3b82f6'; // Blue 500
+                slotEl.style.backgroundColor = '#3b82f6'; // Blue 500
               }
               
               // Mejorar la legibilidad del texto dentro de los slots
-              const textElements = slot.querySelectorAll('div');
-              textElements.forEach((textEl: HTMLElement) => {
-                textEl.style.whiteSpace = 'nowrap';
-                textEl.style.overflow = 'visible';
-                textEl.style.textOverflow = 'initial';
-                textEl.style.fontSize = '9pt'; // Tamaño de letra más grande para mejor legibilidad
+              const textElements = slotEl.querySelectorAll('div');
+              textElements.forEach((textEl: Element) => {
+                const textHtmlEl = textEl as HTMLElement;
+                textHtmlEl.style.whiteSpace = 'nowrap';
+                textHtmlEl.style.overflow = 'visible';
+                textHtmlEl.style.textOverflow = 'initial';
+                textHtmlEl.style.fontSize = '9pt'; // Tamaño de letra más grande para mejor legibilidad
               });
             });
           }
@@ -241,10 +248,7 @@ export default function PlannerPage() {
           imgData, 'PNG', 
           x, y, 
           imgWidth * ratio, 
-          imgHeight * ratio, 
-          null, null, 
-          0, // No rotar
-          'FAST' // Optimización
+          imgHeight * ratio
         );
         
         // Guardar PDF
@@ -252,14 +256,13 @@ export default function PlannerPage() {
         
         // Eliminar el div de carga
         document.body.removeChild(loadingDiv);
-      } catch (error) {
+      } catch {
         // Eliminar el div de carga en caso de error
         const loadingElement = document.querySelector('div[style*="position: fixed"][style*="z-index: 9999"]');
         if (loadingElement && loadingElement.parentNode) {
           loadingElement.parentNode.removeChild(loadingElement);
         }
         
-        window.console && console.error('Error al generar el PDF:', error);
         alert('Hubo un error al generar el PDF. Inténtalo de nuevo.');
       }
     }, 1000); // Mayor tiempo de espera para asegurar que todo esté renderizado

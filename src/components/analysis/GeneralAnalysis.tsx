@@ -50,11 +50,11 @@ export function GeneralAnalysis({ schedule }: GeneralAnalysisProps) {
     );
     
     // 2. Preparar datos para gráfico de barras apiladas
-    const stackedData: Record<string, any>[] = [];
+    const stackedData: Record<string, string | number>[] = [];
     
     // Para cada día, calcular horas por actividad variable
     Object.entries(schedule).forEach(([day, slots]) => {
-      const dayData: Record<string, any> = {
+      const dayData: Record<string, string | number> = {
         day: dayTranslation[day],
       };
       
@@ -69,7 +69,7 @@ export function GeneralAnalysis({ schedule }: GeneralAnalysisProps) {
         const endMinutes = timeToMinutes(slot.endTime);
         const hours = (endMinutes - startMinutes) / 60;
         
-        dayData[slot.name] = (dayData[slot.name] || 0) + hours;
+        dayData[slot.name] = (Number(dayData[slot.name]) || 0) + hours;
       });
       
       stackedData.push(dayData);
@@ -154,7 +154,7 @@ export function GeneralAnalysis({ schedule }: GeneralAnalysisProps) {
                 fill="#8884d8"
                 dataKey="hours"
                 nameKey="activity"
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) => `${name}: ${((percent || 0) * 100).toFixed(0)}%`}
               >
                 {radarData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

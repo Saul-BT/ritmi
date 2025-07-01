@@ -357,8 +357,7 @@ export default function WeeklyCalendar() {
                 const startMinutes = timeToMinutes(slot.startTime);
                 const endMinutes = timeToMinutes(slot.endTime);
                 
-                // Extraer la hora de inicio para posicionamiento
-                const startHour = Math.floor(startMinutes / 60);
+                // Calcular posiciones exactas basadas en minutos
                 
                 // IMPORTANTE: Ajuste preciso para resolver el problema de alineación vertical
                 // Calculamos las posiciones exactas basadas en minutos para alineación perfecta

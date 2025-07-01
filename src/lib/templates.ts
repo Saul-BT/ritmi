@@ -1,4 +1,4 @@
-import { FixedSlot, ScheduleConfig, VariableSlot } from '@/types';
+import { ScheduleConfig } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
 // Colores para categorías

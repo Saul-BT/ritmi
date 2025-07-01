@@ -3,7 +3,7 @@
 import { useSchedule } from "@/lib/context";
 import { VariableSlot } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { FormEvent, useState } from "react";
@@ -17,19 +17,7 @@ const COLORS = [
   "#607D8B", "#795548", "#009688", "#673AB7", "#CDDC39"
 ];
 
-// Determina si un color es oscuro (para usar texto blanco) o claro (para usar texto negro)
-const isColorDark = (hexColor: string): boolean => {
-  // Convertir color hex a RGB
-  const r = parseInt(hexColor.slice(1, 3), 16);
-  const g = parseInt(hexColor.slice(3, 5), 16);
-  const b = parseInt(hexColor.slice(5, 7), 16);
-  
-  // Calcular luminosidad percibida
-  // https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  
-  return luminance < 0.5; // Oscuro si luminosidad < 0.5
-};
+// Función auxiliar para calcular si un color es oscuro o claro (usada inline más adelante)
 
 export default function VariableSlotsManager() {
   const { variableSlots, addVariableSlot, updateVariableSlot, removeVariableSlot } = useSchedule();
